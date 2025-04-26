@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <title>FamFam Signup via Proxy</title>
+</head>
+<body>
+    <h1>FamFam Signup</h1>
+    <input type="email" id="emailInput" placeholder="Vul je email in">
+    <button onclick="signup()">Signup</button>
+
+    <p id="result"></p>
+
+    <script>
+        async function signup() {
+            const email = document.getElementById('emailInput').value;
+            const resultElement = document.getElementById('result');
+
+            if (!email) {
+                resultElement.textContent = "Vul een geldig emailadres in!";
+                return;
+            }
+
+            try {
+                const response = await fetch('/signup', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ email: email })
+                });
+
+                if (response.ok) {
+                    resultElement.textContent = `Signup gelukt voor ${email}! 🎉`;
+                } else {
+                    const errorText = await response.text();
+                    resultElement.textContent = `Signup mislukt: ${errorText}`;
+                }
+            } catch (error) {
+                resultElement.textContent = `Fout: ${error.message}`;
+            }
+        }
+    </script>
+</body>
+</html>
