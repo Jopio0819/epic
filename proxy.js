@@ -1,11 +1,18 @@
 const express = require('express');
 const cors = require('cors');
 const fetch = require('node-fetch');
+const path = require('path');
 
 const app = express();
 app.use(cors());
 app.use(express.json());
 
+// HTML pagina serveren
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'index.html'));
+});
+
+// API voor signup
 app.post('/signup', async (req, res) => {
     const { email } = req.body;
 
